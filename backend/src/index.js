@@ -29,28 +29,34 @@ const ALPHABET = {
   symbols: [' ', '.', ',', '!', '?', ':', ';', '-', '(', ')']
 };
 
-// Kamus kata Bahasa Indonesia untuk prediksi
+// Kamus kata Bahasa Indonesia untuk prediksi – kata-kata yang umum dipakai sehari-hari
 const INDONESIAN_WORDS = {
-  'a': ['aku', 'ada', 'akan', 'ampas', 'ambil', 'aman', 'adalah', 'air', 'apa', 'apakah'],
-  'b': ['baik', 'banyak', 'baru', 'balas', 'baca', 'bahkan', 'basah', 'belum', 'belakang', 'beli'],
-  'c': ['coba', 'cinta', 'cepat', 'cuaca', 'cukup', 'cabang', 'calon', 'cara', 'cari', 'cerita'],
-  'd': ['dan', 'dapat', 'dari', 'dasar', 'datang', 'daya', 'dengan', 'dekat', 'demam', 'dia'],
-  'e': ['emas', 'empat', 'enak', 'energi', 'engkau'],
-  'f': ['foto', 'fungsi'],
-  'g': ['gaji', 'gampang', 'ganda', 'ganteng', 'gantung', 'garam', 'garis', 'garis', 'gatal', 'gaya'],
-  'h': ['halo', 'halus', 'hama', 'hampir', 'handal', 'hangat', 'hanya', 'hapus', 'hari', 'harpa', 'hasil', 'hatan', 'hati', 'hati', 'hawa'],
-  'i': ['ikan', 'iman', 'imajinasi', 'imajinasi', 'impian', 'incar', 'indah', 'ingat', 'ingin', 'ini', 'injak'],
-  'j': ['jadi', 'jadwal', 'jago', 'jagung', 'jahat', 'jajahan', 'jajar', 'jalan', 'jalar', 'jamba', 'jambi', 'jambul', 'jamiah', 'jamuan', 'jamuran', 'janggal', 'janggut', 'janji', 'jangka', 'jangkau'],
-  'k': ['kaca', 'kacau', 'kacer', 'kacip', 'kada', 'kadal', 'kadaluarsa', 'kadang', 'kadanya', 'kadarnya', 'kadek', 'kademenan', 'kademian', 'kadepak', 'kadera', 'kadera', 'kadesakan', 'kadesa', 'kadeton', 'kadét'],
-  'l': ['laban', 'label', 'laberi', 'labial', 'labil', 'labor', 'laborat', 'labur', 'labut', 'labyo', 'laca', 'lacak', 'lacala', 'lacap', 'lacar', 'lacari'],
-  'm': ['maaf', 'maag', 'maal', 'maalish', 'maan', 'maar', 'maat', 'maatregels', 'mabad', 'mabadi', 'mabain', 'mabaloi', 'maban'],
-  'n': ['nabil', 'nabel', 'nabi', 'nabilah', 'nabilan', 'nabir', 'nabo', 'nabor', 'nabu', 'nabung'],
-  'o': ['oad', 'oak', 'oaks', 'oal', 'oalike', 'oasis', 'oast', 'oat'],
-  'p': ['pabila', 'pabil', 'pabna', 'pabrikasi', 'pabrik', 'pabrik', 'pabrik', 'pabrik', 'paca', 'pacak'],
-  't': ['taba', 'tabad', 'tabah', 'taban', 'tabar', 'tabari', 'tabat', 'tabau', 'tabel', 'tabelbulbul'],
-  'w': ['wab', 'waba', 'wabad', 'wabah', 'wabak', 'waban', 'wabar', 'wabari'],
-  'y': ['yabancı', 'yabancılık', 'yabanı', 'yaban', 'yabbas', 'yabe', 'yabenin', 'yabina'],
-  'z': ['zabel', 'zabet', 'zabeta', 'zabid', 'zabidah', 'zabihan', 'zabihh', 'zabih', 'zabihh']
+  'a': ['air', 'aku', 'ada', 'apa', 'akan', 'ambil', 'aman', 'anak', 'ayah', 'angin'],
+  'b': ['baik', 'bantu', 'bisa', 'belum', 'butuh', 'banyak', 'boleh', 'benar', 'badan', 'beli'],
+  'c': ['coba', 'cepat', 'cukup', 'capek', 'cara', 'cari', 'cerita', 'cuaca'],
+  'd': ['dan', 'dari', 'dengan', 'dekat', 'dokter', 'duduk', 'demam', 'dingin', 'dapat', 'dia'],
+  'e': ['enak', 'enam', 'empat', 'engkau'],
+  'f': ['foto', 'fisik', 'fungsi'],
+  'g': ['gatal', 'gigi', 'gerak', 'gelas', 'gawat', 'gantung'],
+  'h': ['halo', 'hari', 'hangat', 'hanya', 'habis', 'hati', 'hubungi'],
+  'i': ['ini', 'ingin', 'ingat', 'itu', 'istirahat', 'iya'],
+  'j': ['juga', 'jalan', 'jaga', 'jatuh', 'jam', 'jauh', 'jadi'],
+  'k': ['kamu', 'kamar', 'kaki', 'kepala', 'kanan', 'kiri', 'kurang', 'kuat', 'kami', 'keras'],
+  'l': ['lagi', 'lelah', 'lapar', 'lama', 'lambat', 'lemah', 'lanjut'],
+  'm': ['mau', 'makan', 'minum', 'minta', 'maaf', 'mama', 'malam', 'mual', 'mulut', 'mulai'],
+  'n': ['nasi', 'nyeri', 'ngantuk', 'nama', 'nafas', 'nyaman'],
+  'o': ['obat', 'oke', 'orang'],
+  'p': ['pelan', 'perlu', 'panas', 'pusing', 'panggil', 'perawat', 'pulang', 'perut', 'pindah'],
+  'q': [],
+  'r': ['rasa', 'rumah', 'ringan', 'rusak', 'raba'],
+  's': ['sakit', 'saya', 'sudah', 'siapa', 'selesai', 'senang', 'sedih', 'sesak', 'semua', 'sampai'],
+  't': ['terima', 'tolong', 'tidak', 'tidur', 'tangan', 'tunggu', 'takut', 'terus'],
+  'u': ['untuk', 'udara', 'usus', 'ulangi'],
+  'v': [],
+  'w': ['waktu', 'wajah'],
+  'x': [],
+  'y': ['ya', 'yang', 'yen'],
+  'z': ['zona'],
 };
 
 // Frasa umum (sering digunakan oleh pasien stroke)
