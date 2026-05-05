@@ -1,18 +1,19 @@
-name: Auto-deploy claude branches to main
+name: Auto-deploy to Railway
 
 on:
   push:
     branches:
+      - main
       - 'claude/**'
 
 jobs:
-  merge-to-main:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -23,8 +24,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge into main and push
+      - name: Merge claude branch into main (only for claude/* pushes)
+        if: startsWith(github.ref_name, 'claude/')
         run: |
           git checkout main
           git merge --ff-only ${{ github.ref_name }}
           git push origin main
+
+      - name: Trigger Railway deploy hook
+        run: curl -s -X POST "${{ secrets.RAILWAY_DEPLOY_HOOK }}"
