@@ -92,38 +92,37 @@ function App() {
           <p className="text-2xl md:text-3xl text-blue-700">Untuk Ayah Yens</p>
         </div>
 
-        {/* Main Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Layout - Top Row: Message Display + Alphabet Board */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Left: Alphabet Board */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div className="bg-white rounded-lg shadow-lg p-6">
               <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Papan Alfabet</h2>
               <AlphabetBoard onLetterClick={handleLetterClick} />
             </div>
-
-            {/* Predictions */}
-            {predictions.length > 0 && (
-              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-                <h3 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Saran Kata</h3>
-                <PredictionBox predictions={predictions} onPredictionClick={handlePredictionClick} />
-              </div>
-            )}
           </div>
 
-          {/* Right: Message & Phrases */}
+          {/* Right: Message Display */}
           <div>
-            {/* Message Display */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6 sticky top-4">
+            <div className="bg-white rounded-lg shadow-lg p-6">
               <h3 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Pesan Anda</h3>
               <MessageDisplay message={message} onSend={handleSendMessage} onBackspace={handleBackspace} onClear={clearMessage} onSpeak={speak} isSpeaking={isSpeaking} />
             </div>
-
-            {/* Common Phrases */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Frasa Cepat</h3>
-              <PhraseButtons onPhraseClick={handlePhraseClick} />
-            </div>
           </div>
+        </div>
+
+        {/* Predictions */}
+        {predictions.length > 0 && (
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h3 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Saran Kata</h3>
+            <PredictionBox predictions={predictions} onPredictionClick={handlePredictionClick} />
+          </div>
+        )}
+
+        {/* Bottom Row: Common Phrases */}
+        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <h3 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">Frasa Cepat</h3>
+          <PhraseButtons onPhraseClick={handlePhraseClick} />
         </div>
 
         {/* History */}
