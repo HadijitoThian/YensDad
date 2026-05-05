@@ -11,7 +11,8 @@ function App() {
   const [predictions, setPredictions] = useState([])
   const [lastLetter, setLastLetter] = useState('')
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+  // Use relative URLs so it works both locally and on Railway
+  const API_URL = import.meta.env.VITE_API_URL || ''
 
   // Handle alfabet click
   const handleLetterClick = (letter) => {

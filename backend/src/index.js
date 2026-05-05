@@ -2,16 +2,22 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 
 // Setup
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static frontend files
+const frontendPath = join(__dirname, '../../frontend/dist');
+app.use(express.static(frontendPath));
 
 // ===== DATA =====
 
@@ -105,10 +111,21 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Backend berjalan dengan baik' });
 });
 
+// ===== SERVE FRONTEND INDEX FOR SPA ROUTING =====
+
+// All other routes serve the frontend index.html for React routing
+app.get('*', (req, res) => {
+  // If it's not an API route, serve the frontend
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(join(frontendPath, 'index.html'));
+  }
+});
+
 // ===== START SERVER =====
 
 app.listen(PORT, () => {
-  console.log(`✅ Yens Dad Backend berjalan di http://localhost:${PORT}`);
-  console.log(`📡 API ready untuk frontend`);
-  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+  console.log(`✅ Yens Dad App berjalan di http://localhost:${PORT}`);
+  console.log(`📡 Frontend: http://localhost:${PORT}`);
+  console.log(`🔗 API: http://localhost:${PORT}/api/health`);
+  console.log(`🔧 Static files served from: ${frontendPath}`);
 });
