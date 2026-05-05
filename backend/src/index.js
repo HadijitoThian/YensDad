@@ -29,35 +29,53 @@ const ALPHABET = {
   symbols: [' ', '.', ',', '!', '?', ':', ';', '-', '(', ')']
 };
 
-// Kamus kata Bahasa Indonesia untuk prediksi – kata-kata yang umum dipakai sehari-hari
-const INDONESIAN_WORDS = {
-  'a': ['air', 'aku', 'ada', 'apa', 'akan', 'ambil', 'aman', 'anak', 'ayah', 'angin'],
-  'b': ['baik', 'bantu', 'bisa', 'belum', 'butuh', 'banyak', 'boleh', 'benar', 'badan', 'beli'],
-  'c': ['coba', 'cepat', 'cukup', 'capek', 'cara', 'cari', 'cerita', 'cuaca'],
-  'd': ['dan', 'dari', 'dengan', 'dekat', 'dokter', 'duduk', 'demam', 'dingin', 'dapat', 'dia'],
-  'e': ['enak', 'enam', 'empat', 'engkau'],
-  'f': ['foto', 'fisik', 'fungsi'],
-  'g': ['gatal', 'gigi', 'gerak', 'gelas', 'gawat', 'gantung'],
-  'h': ['halo', 'hari', 'hangat', 'hanya', 'habis', 'hati', 'hubungi'],
-  'i': ['ini', 'ingin', 'ingat', 'itu', 'istirahat', 'iya'],
-  'j': ['juga', 'jalan', 'jaga', 'jatuh', 'jam', 'jauh', 'jadi'],
-  'k': ['kamu', 'kamar', 'kaki', 'kepala', 'kanan', 'kiri', 'kurang', 'kuat', 'kami', 'keras'],
-  'l': ['lagi', 'lelah', 'lapar', 'lama', 'lambat', 'lemah', 'lanjut'],
-  'm': ['mau', 'makan', 'minum', 'minta', 'maaf', 'mama', 'malam', 'mual', 'mulut', 'mulai'],
-  'n': ['nasi', 'nyeri', 'ngantuk', 'nama', 'nafas', 'nyaman'],
-  'o': ['obat', 'oke', 'orang'],
-  'p': ['pelan', 'perlu', 'panas', 'pusing', 'panggil', 'perawat', 'pulang', 'perut', 'pindah'],
-  'q': [],
-  'r': ['rasa', 'rumah', 'ringan', 'rusak', 'raba'],
-  's': ['sakit', 'saya', 'sudah', 'siapa', 'selesai', 'senang', 'sedih', 'sesak', 'semua', 'sampai'],
-  't': ['terima', 'tolong', 'tidak', 'tidur', 'tangan', 'tunggu', 'takut', 'terus'],
-  'u': ['untuk', 'udara', 'usus', 'ulangi'],
-  'v': [],
-  'w': ['waktu', 'wajah'],
-  'x': [],
-  'y': ['ya', 'yang', 'yen'],
-  'z': ['zona'],
-};
+// Flat word list — predictions are filtered by prefix of the word being typed
+const ALL_WORDS = [
+  // A
+  'ada', 'adalah', 'agak', 'air', 'aku', 'aman', 'ambil', 'anak', 'angin', 'apa', 'apakah', 'atas', 'atau', 'ayah', 'ayo',
+  // B
+  'badan', 'baik', 'bantu', 'banyak', 'bawah', 'benar', 'berbaring', 'beri', 'bersih', 'besar', 'bisa', 'beli', 'belum', 'boleh', 'bosan', 'buka', 'butuh',
+  // C
+  'capek', 'cara', 'cari', 'cepat', 'coba', 'cukup',
+  // D
+  'dada', 'dalam', 'dan', 'dapat', 'dari', 'datang', 'dekat', 'demam', 'dengan', 'dia', 'dingin', 'dokter', 'duduk',
+  // E
+  'enam', 'enak', 'empat', 'engkau',
+  // F
+  'fisik', 'foto',
+  // G
+  'ganti', 'gatal', 'gawat', 'gelas', 'gerak', 'gigi',
+  // H
+  'habis', 'halo', 'hangat', 'hanya', 'hari', 'haus', 'hati', 'hubungi',
+  // I
+  'ingat', 'ingin', 'ini', 'istirahat', 'itu', 'iya',
+  // J
+  'jadi', 'jaga', 'jalan', 'jam', 'jauh', 'jatuh', 'juga',
+  // K
+  'kaki', 'kamar', 'kami', 'kamu', 'kanan', 'karena', 'keluar', 'kenapa', 'kepala', 'keras', 'kiri', 'kuat', 'kurang',
+  // L
+  'lagi', 'lama', 'lambat', 'lapar', 'lelah', 'lemah', 'luka', 'lutut',
+  // M
+  'maaf', 'makan', 'mama', 'mandi', 'masuk', 'malam', 'mau', 'minta', 'minum', 'mual', 'mulai', 'mulut',
+  // N
+  'nafas', 'nama', 'nanti', 'nasi', 'ngantuk', 'nyaman', 'nyeri',
+  // O
+  'obat', 'oke', 'orang',
+  // P
+  'panas', 'panggil', 'pegal', 'pelan', 'pergi', 'perlu', 'perawat', 'perut', 'pindah', 'pingsan', 'pucat', 'pulang', 'punggung', 'pusing',
+  // R
+  'rasa', 'rawat', 'ringan', 'rumah',
+  // S
+  'sakit', 'sampai', 'sangat', 'saya', 'sedih', 'sebentar', 'sekali', 'selesai', 'semua', 'senang', 'sesak', 'siapa', 'sudah', 'susah',
+  // T
+  'takut', 'tambah', 'tangan', 'tengah', 'terlalu', 'terima', 'terus', 'tidak', 'tidur', 'tolong', 'tunggu',
+  // U
+  'udara', 'ulangi', 'untuk',
+  // W
+  'wajah', 'waktu',
+  // Y
+  'ya', 'yang', 'yen',
+].sort();
 
 // Frasa umum (sering digunakan oleh pasien stroke)
 const COMMON_PHRASES = [
@@ -90,14 +108,11 @@ app.get('/api/phrases', (req, res) => {
   res.json(COMMON_PHRASES);
 });
 
-// 3. GET prediksi kata berdasarkan huruf awal
-app.get('/api/predict/:letter', (req, res) => {
-  const letter = req.params.letter.toLowerCase();
-  const predictions = INDONESIAN_WORDS[letter] || [];
-  res.json({
-    letter,
-    predictions: predictions.slice(0, 6) // Top 6 predictions
-  });
+// 3. GET prediksi kata berdasarkan awalan kata yang sedang diketik
+app.get('/api/predict/:prefix', (req, res) => {
+  const prefix = req.params.prefix.toLowerCase();
+  const predictions = ALL_WORDS.filter(w => w.startsWith(prefix));
+  res.json({ prefix, predictions: predictions.slice(0, 4) });
 });
 
 // 4. POST test text-to-speech (hanya return metadata, client-side TTS)

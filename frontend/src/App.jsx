@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import AlphabetBoard from './components/AlphabetBoard'
 
 // ─── Daily words organised by activity tab ───────────────────────────────────
@@ -71,6 +71,21 @@ function App() {
   const [activeTab, setActiveTab] = useState('sapaan')
 
   const API_URL = import.meta.env.VITE_API_URL || ''
+  const idVoiceRef = useRef(null)
+
+  // ── Load Indonesian voice once (voices load asynchronously in browsers) ────
+  useEffect(() => {
+    const pickVoice = () => {
+      const voices = window.speechSynthesis.getVoices()
+      idVoiceRef.current =
+        voices.find(v => v.lang === 'id-ID') ||
+        voices.find(v => v.lang.startsWith('id')) ||
+        null
+    }
+    pickVoice()
+    window.speechSynthesis.addEventListener('voiceschanged', pickVoice)
+    return () => window.speechSynthesis.removeEventListener('voiceschanged', pickVoice)
+  }, [])
 
   // ── Speech ─────────────────────────────────────────────────────────────────
   const speak = (text) => {
@@ -78,8 +93,9 @@ function App() {
     window.speechSynthesis.cancel()
     setIsSpeaking(true)
     const u = new SpeechSynthesisUtterance(text)
+    if (idVoiceRef.current) u.voice = idVoiceRef.current
     u.lang = 'id-ID'
-    u.rate = 0.8
+    u.rate = 0.85
     u.pitch = 1
     u.volume = 1
     u.onend = () => setIsSpeaking(false)
@@ -89,17 +105,20 @@ function App() {
 
   // ── Keyboard ───────────────────────────────────────────────────────────────
   const handleLetterClick = (letter) => {
-    setMessage(prev => prev + letter)
-    if (/[a-zA-Z]/.test(letter)) {
-      fetchPredictions(letter)
+    const newMsg = message + letter
+    setMessage(newMsg)
+    // Get the word currently being typed (everything after the last space)
+    const currentWord = newMsg.trimEnd().split(/\s+/).pop() || ''
+    if (currentWord.length > 0 && /[a-zA-Z]/.test(currentWord)) {
+      fetchPredictions(currentWord)
     } else {
       setPredictions([])
     }
   }
 
-  const fetchPredictions = async (letter) => {
+  const fetchPredictions = async (currentWord) => {
     try {
-      const res = await fetch(`${API_URL}/api/predict/${letter}`)
+      const res = await fetch(`${API_URL}/api/predict/${encodeURIComponent(currentWord.toLowerCase())}`)
       const data = await res.json()
       setPredictions(data.predictions || [])
     } catch {
@@ -109,7 +128,10 @@ function App() {
 
   // ── Predictions ────────────────────────────────────────────────────────────
   const handlePredictionClick = (word) => {
-    const newMsg = message.slice(0, -1) + word + ' '
+    // Replace the current incomplete word with the selected prediction
+    const parts = message.trimEnd().split(/\s+/)
+    parts[parts.length - 1] = word
+    const newMsg = parts.join(' ') + ' '
     setMessage(newMsg)
     setPredictions([])
     speak(word)
